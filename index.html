@@ -4,6 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マイクラブロックチェックリスト</title>
+    <script>
+        function hiraganaToKatakana(text) {
+            return text.replace(/[\u3041-\u3096]/g, function(match) {
+                var charCode = match.charCodeAt(0) + 0x60;
+                return String.fromCharCode(charCode);
+            });
+        }
+
+        const checkboxes = document.querySelectorAll('.checkbox');
+
+        checkboxes.forEach((checkbox) => {
+            const checkboxId = checkbox.id;
+            const savedState = localStorage.getItem(`${checkboxId}Checked`);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            } else if (savedState === 'false') {
+                checkbox.checked = false;
+            }
+        });
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                const checkboxId = checkbox.id;
+                localStorage.setItem(`${checkboxId}Checked`, checkbox.checked);
+            });
+        });
+
+        const searchBox = document.getElementById('sbox');
+        const searchButton = document.getElementById('sbtn');
+        
+        const showAllButton = document.getElementById('showAllButton');
+
+        function hideCheckbox(checkboxElement) {
+            checkboxElement.parentElement.style.display = 'none';
+        }
+
+        function showCheckbox(checkboxElement) {
+            checkboxElement.parentElement.style.display = 'block';
+        }
+
+        searchBox.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        searchButton.addEventListener('click', performSearch);
+
+        showAllButton.addEventListener('click', () => {
+            checkboxes.forEach((checkbox) => {
+                showCheckbox(checkbox);
+            });
+
+            searchBox.value = '';
+        });
+
+        function performSearch() {
+            const keyword = hiraganaToKatakana(searchBox.value).toLowerCase();
+
+            checkboxes.forEach((checkbox) => {
+                const label = checkbox.nextElementSibling;
+                const labelText = label.textContent.toLowerCase();
+
+                if (keyword.trim() === '' || labelText.includes(keyword)) {
+                    showCheckbox(checkbox);
+                } else {
+                    hideCheckbox(checkbox);
+                }
+            });
+        }
+    </script>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
@@ -3850,95 +3921,6 @@
             <input id="checkbox959" class="checkbox" type="checkbox">
             <label for="checkbox959">鼻を鳴らす動物の壺の欠片</label>
         </p>
-</div>
-
-        
     </div>
-    <script>
-         // ひらがなをカタカナに変換する関数
-        function hiraganaToKatakana(text) {
-            return text.replace(/[\u3041-\u3096]/g, function(match) {
-                var charCode = match.charCodeAt(0) + 0x60;
-                return String.fromCharCode(charCode);
-            });
-        }
-
-        // チェックボックスの要素を取得
-        const checkboxes = document.querySelectorAll('.checkbox');
-
-        // チェックボックスの状態をローカルストレージから取得して設定
-        checkboxes.forEach((checkbox) => {
-            const checkboxId = checkbox.id;
-            const savedState = localStorage.getItem(`${checkboxId}Checked`);
-            if (savedState === 'true') {
-                checkbox.checked = true;
-            } else if (savedState === 'false') {
-                checkbox.checked = false;
-            }
-        });
-
-        // チェックボックスの状態が変化したときにlocalStorageに保存
-        checkboxes.forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-                const checkboxId = checkbox.id;
-                localStorage.setItem(`${checkboxId}Checked`, checkbox.checked);
-            });
-        });
-
-        // 検索ボタンの要素を取得
-        const searchBox = document.getElementById('sbox');
-        const searchButton = document.getElementById('sbtn');
-        
-        // すべて表示ボタンの要素を取得
-        const showAllButton = document.getElementById('showAllButton');
-
-        // チェックボックスを非表示にする関数
-        function hideCheckbox(checkboxElement) {
-            checkboxElement.parentElement.style.display = 'none';
-        }
-
-        // チェックボックスを表示する関数
-        function showCheckbox(checkboxElement) {
-            checkboxElement.parentElement.style.display = 'block';
-        }
-
-        // Enterキーが押されたときの処理
-        searchBox.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        // 検索ボタンクリック時の処理
-        searchButton.addEventListener('click', performSearch);
-
-        // すべて表示ボタンクリック時の処理
-        showAllButton.addEventListener('click', () => {
-            checkboxes.forEach((checkbox) => {
-                showCheckbox(checkbox);
-            });
-
-            // 検索ボックスの値をクリア
-            searchBox.value = '';
-        });
-
-        // 実際の検索処理を行う関数
-        function performSearch() {
-            const keyword = hiraganaToKatakana(searchBox.value).toLowerCase(); // ひらがなをカタカナに変換し、小文字に変換
-
-            checkboxes.forEach((checkbox) => {
-                const label = checkbox.nextElementSibling; // チェックボックスの次の要素はラベル
-                const labelText = label.textContent.toLowerCase(); // ラベルのテキストを小文字に変換
-
-                if (keyword.trim() === '' || labelText.includes(keyword)) {
-                    // キーワードが空白の場合、またはキーワードがラベルに含まれている場合、チェックボックスを表示
-                    showCheckbox(checkbox);
-                } else {
-                    // それ以外の場合、チェックボックスを非表示にする
-                    hideCheckbox(checkbox);
-                }
-            });
-        }
-    </script>
 </body>
 </html>
