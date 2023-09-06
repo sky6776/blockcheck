@@ -1,3 +1,42 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    padding-top: 130px;
+  }
+header {
+    padding: 10px 4% 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.10);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+  }
+
+  nav {
+    margin: 0 0 0 auto;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    font-family: "ヒラギノ角ゴ Pro W3";
+  }
+
 #form1 {
     text-align: center;
 }
@@ -36,6 +75,7 @@
 #sbtn:hover {
     color: #666;
 }
+
 input[type="checkbox"]  {
     margin: 0;
     padding: 0;
@@ -47,6 +87,7 @@ input[type="checkbox"]  {
     -moz-appearance: none;
     appearance: none;
   }
+
 
 input[type="checkbox"] {
     cursor: pointer;
@@ -82,4 +123,19 @@ input[type="checkbox"] {
   }
   input[type="checkbox"]:checked::after {
     opacity: 1;
+  }
+  .site-footer {
+    background: rgb(255, 255, 255);
+    padding: 10px 0;
+  }
+  
+  .copyright {
+    font-family: Terminal;
+    color: rgb(0, 0, 0);
+    font-size: 12px;
+    text-align: center;
+  }
+  .last {
+    color: rgb(0, 0, 0);
+    font-size: 12px;
   }
