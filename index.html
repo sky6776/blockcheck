@@ -14,6 +14,8 @@
         <nav>
             <ul>
                 <button id="showAllButton">すべて表示</button>
+                <button id="showUncheckedButton">未チェックのみ表示</button>
+
             </ul>
         </nav>
     </header>
@@ -4108,68 +4110,77 @@
     return text;
 }
 
-const checkboxes = document.querySelectorAll('.checkbox');
+        const checkboxes = document.querySelectorAll('.checkbox');
 
-checkboxes.forEach((checkbox) => {
-    const checkboxId = checkbox.id;
-    const savedState = localStorage.getItem(`${checkboxId}Checked`);
-    if (savedState === 'true') {
-        checkbox.checked = true;
-    } else if (savedState === 'false') {
-        checkbox.checked = false;
-    }
-});
+        checkboxes.forEach((checkbox) => {
+            const checkboxId = checkbox.id;
+            const savedState = localStorage.getItem(`${checkboxId}Checked`);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            } else if (savedState === 'false') {
+                checkbox.checked = false;
+            }
 
-checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', () => {
-        const checkboxId = checkbox.id;
-        localStorage.setItem(`${checkboxId}Checked`, checkbox.checked);
-    });
-});
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(`${checkboxId}Checked`, checkbox.checked);
+            });
+        });
 
-const searchBox = document.getElementById('sbox');
-const searchButton = document.getElementById('sbtn');
+        const searchBox = document.getElementById('sbox');
+        const searchButton = document.getElementById('sbtn');
+        const showAllButton = document.getElementById('showAllButton');
+        const showUncheckedButton = document.getElementById('showUncheckedButton');
 
-const showAllButton = document.getElementById('showAllButton');
-
-function hideCheckbox(checkboxElement) {
-    checkboxElement.parentElement.style.display = 'none';
-}
-
-function showCheckbox(checkboxElement) {
-    checkboxElement.parentElement.style.display = 'block';
-}
-
-searchBox.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        performSearch();
-    }
-});
-
-searchButton.addEventListener('click', performSearch);
-
-showAllButton.addEventListener('click', () => {
-    checkboxes.forEach((checkbox) => {
-        showCheckbox(checkbox);
-    });
-
-    searchBox.value = '';
-});
-
-function performSearch() {
-    const keyword = normalizeJapaneseText(searchBox.value).trim();
-
-    checkboxes.forEach((checkbox) => {
-        const label = checkbox.nextElementSibling;
-        const labelText = normalizeJapaneseText(label.textContent);
-
-        if (keyword === '' || labelText.includes(keyword)) {
-            showCheckbox(checkbox);
-        } else {
-            hideCheckbox(checkbox);
+        function hideCheckbox(checkboxElement) {
+            checkboxElement.parentElement.style.display = 'none';
         }
-    });
-}
+
+        function showCheckbox(checkboxElement) {
+            checkboxElement.parentElement.style.display = 'block';
+        }
+
+        searchBox.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        searchButton.addEventListener('click', performSearch);
+
+        showAllButton.addEventListener('click', () => {
+            checkboxes.forEach((checkbox) => {
+                showCheckbox(checkbox);
+            });
+
+            searchBox.value = '';
+        });
+
+        showUncheckedButton.addEventListener('click', () => {
+            checkboxes.forEach((checkbox) => {
+                if (!checkbox.checked) {
+                    showCheckbox(checkbox);
+                } else {
+                    hideCheckbox(checkbox);
+                }
+            });
+
+            searchBox.value = '';
+        });
+
+        function performSearch() {
+            const keyword = normalizeJapaneseText(searchBox.value).trim();
+
+            checkboxes.forEach((checkbox) => {
+                const label = checkbox.nextElementSibling;
+                const labelText = normalizeJapaneseText(label.textContent);
+
+                if (keyword === '' || labelText.includes(keyword)) {
+                    showCheckbox(checkbox);
+                } else {
+                    hideCheckbox(checkbox);
+                }
+            });
+        }
 
     </script>
     </body>
